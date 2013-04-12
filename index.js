@@ -1,4 +1,4 @@
-var minute = 1000;
+var minute = 60000;
 setInterval(function() {
     var size = $('input').attr('size');
     $('input').attr('size', Number(size)+1);
