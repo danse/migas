@@ -7,7 +7,7 @@ function set(n) {
         .attr('maxlength', n);
 }
 
-function reset() { set(1); // size 0 won't work }
+function reset() { set(1); } // size 0 won't work
 
 setInterval(function() {
     var n = Number($('input').attr('maxlength')) + 1;
