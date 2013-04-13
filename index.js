@@ -9,9 +9,12 @@ var wrapper = {
     add: function(record) {
         this.handler(record);
         this.records.push(record);
+        this.save();
+    },
+    save: function() {
         localStorage['records'] = JSON.stringify(this.records);
     },
-    reload: function() {
+    load: function() {
         try {
             this.records = JSON.parse(localStorage.getItem('records'));
         } catch(e) {
@@ -22,6 +25,10 @@ var wrapper = {
         } else {
             this.records = [];
         }
+    },
+    clear: function() {
+        this.records = [];
+        this.save();
     }
 };
 var handler = function(record) {
@@ -36,5 +43,6 @@ onload = function() {
             $i.prop('value', '').attr('size', 0);
         }
     });
-    wrapper.reload();
+    wrapper.load();
 };
+$('button').click(wrapper.clear());
