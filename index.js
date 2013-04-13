@@ -1,7 +1,12 @@
 var minute = 60000;
+function set(n) {
+    $('input')
+        .attr('size', n)
+        .attr('maxlength', n);
+}
 setInterval(function() {
-    var size = $('input').attr('size');
-    $('input').attr('size', Number(size)+1);
+    var n = Number($('input').attr('size')) + 1;
+    set(n);
 }, minute);
 var wrapper = {
     records: [],
@@ -44,5 +49,6 @@ onload = function() {
         }
     });
     wrapper.load();
+    $('button').click(wrapper.clear());
+    set(1);
 };
-$('button').click(wrapper.clear());
