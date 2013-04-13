@@ -50,7 +50,7 @@ onload = function() {
             reset();
         }
     });
-    $('button').click(burrito.clear);
+    $('button').click(burrito.clear.bind(burrito));
     burrito.load();
     reset();
 };
