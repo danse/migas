@@ -1,9 +1,11 @@
 var minute = 60000;
 function set(n) {
     $('input')
-        .attr('size', n)
+        .prop('value', '')
+        .attr('size', n+1) // size 0 won't work
         .attr('maxlength', n);
 }
+function reset() { set(0); }
 setInterval(function() {
     var n = Number($('input').attr('size')) + 1;
     set(n);
@@ -45,10 +47,10 @@ onload = function() {
         if(e.which===13) {
             var $i = $('input');
             wrapper.add([$i.attr('size'), ' '+$i.prop('value')]);
-            $i.prop('value', '').attr('size', 0);
+            reset();
         }
     });
     wrapper.load();
     $('button').click(wrapper.clear());
-    set(1);
+    reset();
 };
