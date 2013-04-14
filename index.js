@@ -29,12 +29,12 @@ var burrito = {
     load: function() {
         try {
             this.records = JSON.parse(localStorage.getItem('records'));
+            this.records.map(this.append);
+            $('.report').append('<hr>');
         } catch(e) {
             console.log('error parsing '+localStorage['records']);
             this.records = [];
         }
-        this.records.map(this.append);
-        $('.report').append('<hr>');
     },
     clear: function() {
         this.records = [];
