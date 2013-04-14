@@ -34,6 +34,7 @@ var burrito = {
             this.records = [];
         }
         this.records.map(this.append);
+        $('.report').append('<hr>');
     },
     clear: function() {
         this.records = [];
