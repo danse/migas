@@ -1,4 +1,4 @@
-var minute = 6000;
+var minute = 60000;
 
 function set(n, reset) {
     $('input')
