@@ -16,7 +16,7 @@ setInterval(function() {
 
 var burrito = {
     append: function(record){
-        $('.report').append('<br>', record);
+        $('.report').prepend('<br>', record);
     },
     add: function(record) {
         this.append(record);
@@ -30,7 +30,7 @@ var burrito = {
         try {
             this.records = JSON.parse(localStorage.getItem('records'));
             this.records.map(this.append);
-            $('.report').append('<hr>');
+            $('.report').prepend('<hr>');
         } catch(e) {
             console.log('error parsing '+localStorage['records']);
             this.records = [];
