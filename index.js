@@ -1,5 +1,19 @@
 var minute = 60000;
 
+// > crumbify('short message', 30)
+// 'short message ................'
+function crumbify(s, n) {
+    if(s.length >= n) {
+        return s;
+    } else {
+        s += ' '; // for readability
+        for(var i=s.length; i<n; i++) {
+            s+= '.';
+        }
+        return s;
+    }
+}
+
 function set(n, reset) {
     $('input')
         .attr('size', n)
@@ -47,7 +61,9 @@ onload = function() {
     $('input').keyup(function(e) {
         if(e.which===13) {
             var $i = $('input');
-            burrito.add([$i.attr('size'), ' '+$i.prop('value')]);
+            var size = $i.attr('size');
+            var value = crumbify($i.prop('value'), size);
+            burrito.add([size, ' '+value]);
             reset();
         }
     });
