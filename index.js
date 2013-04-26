@@ -18,6 +18,8 @@ function set(n, reset) {
     $('input')
         .attr('size', n)
         .attr('maxlength', n);
+    var d = new Date();
+    $('.hour').text(d.getHours()+':'+d.getMinutes());
     if(reset) { $('input').prop('value', ''); }
 }
 
