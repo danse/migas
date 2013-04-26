@@ -70,4 +70,5 @@ onload = function() {
     $('button').click(burrito.clear.bind(burrito));
     burrito.load();
     reset();
+    $('input').focus();
 };
