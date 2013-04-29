@@ -3,9 +3,21 @@
     <head>
         <title>crumbs</title>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="fun.js"></script>
         <script src="index.js"></script>
         <style>
             .issues { float: right; }
+            .prompt {
+                border: 1px solid steelblue;
+                width: 100px;
+                display: block;
+                padding: 10px;
+                margin: 60px auto;
+                z-index: 2;
+                background: white;
+                text-align: center;
+                border-radius: 4px;
+            }
         </style>
     </head>
     <body>
@@ -14,5 +26,6 @@
         <span class="hour"></span>
         <input size="1" />
         <div class="report"></div>
+        <div style="display:none" class="prompt"></div>
     </body>
 </html>

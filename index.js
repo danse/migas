@@ -1,19 +1,5 @@
 var minute = 60000;
 
-// > crumbify('short message', 30)
-// 'short message ................'
-function crumbify(s, n) {
-    if(s.length >= n) {
-        return s;
-    } else {
-        s += ' '; // for readability
-        for(var i=s.length; i<n; i++) {
-            s+= '.';
-        }
-        return s;
-    }
-}
-
 function set(n, reset) {
     $('input')
         .attr('size', n)
@@ -31,8 +17,24 @@ setInterval(function() {
 }, minute);
 
 var burrito = {
+    reports: {},
     append: function(record){
-        $('.report').prepend('<br>', record);
+        var time = record[0];
+        var desc = record[1];
+        h.read(desc);
+        if(h.test) {
+            desc = h.html;
+            h.match.map(function(tag) {
+                if(tag in burrito.reports) {
+                    burrito.reports[tag] += Number(time);
+                } else {
+                    burrito.reports[tag] =  Number(time);
+                }
+            }.bind(this));
+        } else {
+            desc = record[1];
+        }
+        $('.report').prepend('<br>', time+' '+desc);
     },
     add: function(record) {
         this.append(record);
@@ -53,6 +55,7 @@ var burrito = {
         }
     },
     clear: function() {
+        this.reports = {};
         this.records = [];
         this.save();
         $('.report').empty();
@@ -65,7 +68,7 @@ onload = function() {
             var $i = $('input');
             var size = $i.attr('size');
             var value = crumbify($i.prop('value'), size);
-            burrito.add([size, ' '+value]);
+            burrito.add([size, value]);
             reset();
         }
     });
@@ -73,4 +76,8 @@ onload = function() {
     burrito.load();
     reset();
     $('input').focus();
+    $(document).on('mouseenter mouseleave', '.report a', function(e) {
+        var report = burrito.reports['#'+$(e.target).attr('data-name')];
+        $('.prompt').text(report).toggle();
+    });
 };
