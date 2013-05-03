@@ -4,8 +4,6 @@ function set(n, reset) {
     $('input')
         .attr('size', n)
         .attr('maxlength', n);
-    var d = new Date();
-    $('.hour').text(d.getHours()+':'+d.getMinutes());
     if(reset) { $('input').prop('value', ''); }
 }
 
@@ -70,6 +68,8 @@ onload = function() {
             var value = crumbify($i.prop('value'), size);
             burrito.add([size, value]);
             reset();
+            var d = new Date();
+            $('.hour').text(d.getHours()+':'+d.getMinutes());
         }
     });
     $('button').click(burrito.clear.bind(burrito));
