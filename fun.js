@@ -1,8 +1,12 @@
 // > crumbify('short message', 30)
 // 'short message ................'
+// > crumbify('long message', 5)
+// 'long <span class="extra">message</span>'
 function crumbify(s, n) {
     if(s.length >= n) {
-        return s;
+        var fair = s.slice(0, n);
+            extra = s.slice(n);
+        return fair + '<span class="extra">' + extra + '</span>'
     } else {
         s += ' '; // for readability
         for(var i=s.length; i<n; i++) {

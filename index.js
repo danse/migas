@@ -1,16 +1,14 @@
 var minute = 60000;
 
 function set(n, reset) {
-    $('input')
-        .attr('size', n)
-        .attr('maxlength', n);
+    $('input').attr('size', n);
     if(reset) { $('input').prop('value', ''); }
 }
 
 function reset() { set(1, true); } // size 0 won't work
 
 setInterval(function() {
-    var n = Number($('input').attr('maxlength')) + 1;
+    var n = Number($('input').attr('size')) + 1;
     set(n);
 }, minute);
 
