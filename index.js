@@ -93,9 +93,9 @@ onload = function() {
     $('input').keyup(function(e) {
         if(e.which===13) {
             var $i = $('input');
-            var size = $i.attr('size');
-            var value = crumbify($i.prop('value'), size);
-            burrito.add([size, value]);
+            var minutes = $i.attr('size') - 1;
+            var value = crumbify($i.prop('value'), minutes + 1);
+            burrito.add([minutes, value]);
             reset();
             var d = new Date();
             $('.hour').text(d.getHours()+':'+d.getMinutes());
