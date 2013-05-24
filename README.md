@@ -1,3 +1,6 @@
+> All our words are but crumbs that fall down from the feast of the mind.
+>
+> Khalil Gibran
 
 This is a minimalistic timetracker. The space provided to you for the log
 message will depend on the amount of elapsed time. This will make easier to get
