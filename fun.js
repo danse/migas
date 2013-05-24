@@ -1,3 +1,11 @@
+// > hours(1234)
+// [20, 34]
+function hours(minutes) {
+    var reminder = minutes % 60,
+        integer = minutes - reminder;
+    return [integer/60, reminder];
+}
+
 // > crumbify('short message', 30)
 // 'short message ................'
 // > crumbify('long message', 5)
