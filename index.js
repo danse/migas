@@ -79,3 +79,6 @@ onload = function() {
         $('.prompt').text(report).toggle();
     });
 };
+onpageshow = function() {
+    $('input').focus();
+}
