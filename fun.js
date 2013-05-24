@@ -40,7 +40,7 @@ var h = {
         this.s = s;
         this.test = r.test(s);
         this.match = s.match(r);
-        this.html = s.replace(r, '<a data-name="$1" href="javascript:void(0)" class="$1">$1</a>');
+        this.html = s.replace(r, '<a data-name="$1" href="javascript:void(0)" class="hashtag">$1</a>');
         return this;
     }
 }
