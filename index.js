@@ -1,6 +1,7 @@
 var minute = 60000;
 
 function Reporter() {
+    var reporter = this;
     this.$node = false;
     this.update = function() {
         if(this.$node) {
@@ -11,6 +12,12 @@ function Reporter() {
     this.add = function(time) {
         this.counter += parseInt(time);
         this.update();
+    };
+    this.set = {
+        node: function($node) {
+            reporter.$node = $node;
+            reporter.update();
+        }
     };
     return this;
 };
@@ -103,7 +110,7 @@ onload = function() {
         $('.prompt').text(report).toggle();
     });
 
-    reporters.all.$node = $('.all.reporter');
+    reporters.all.set.node($('.all.reporter'));
 };
 onpageshow = function() {
     $('input').focus();
