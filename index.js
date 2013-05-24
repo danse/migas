@@ -1,5 +1,28 @@
 var minute = 60000;
 
+function Reporter() {
+    this.$node = false;
+    this.update = function() {
+        if(this.$node) {
+            this.$node.text(format(this.counter));
+        }
+    }
+    this.counter = 0;
+    this.add = function(time) {
+        this.counter += parseInt(time);
+        this.update();
+    };
+    return this;
+};
+
+var reporters = {};
+
+[
+    'all',
+].forEach(function(n) {
+    reporters[n] = new Reporter();
+});
+
 function set(n, reset) {
     $('input').attr('size', n);
     if(reset) { $('input').prop('value', ''); }
@@ -30,6 +53,7 @@ var burrito = {
         } else {
             desc = record[1];
         }
+        reporters.all.add(time);
         $('.report').prepend('<br>', time+' '+desc);
     },
     add: function(record) {
@@ -78,6 +102,8 @@ onload = function() {
         var report = burrito.reports['#'+$(e.target).attr('data-name')];
         $('.prompt').text(report).toggle();
     });
+
+    reporters.all.$node = $('.all.reporter');
 };
 onpageshow = function() {
     $('input').focus();
