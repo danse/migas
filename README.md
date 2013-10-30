@@ -23,3 +23,8 @@ I'm running this on Chrome, but Firefox should go fine, as well.
 You can prefix any word with an hash (`#`) sign making an hashtag, like in
 `#myticket`, like in twitter. When you'll hover on that word, a sum of all the
 time tagged with it will be shown.
+
+#### About the code
+
+Nothing so special here. But the code in `fun.js` is doctested. This
+means that the comments are also actual tests. [Doctest](https://github.com/davidchambers/doctest) is pretty cool, check it out!
