@@ -1,4 +1,5 @@
 var minute = 60000;
+var before = Date.now();
 
 function Reporter() {
     var reporter = this;
@@ -38,8 +39,14 @@ function set(n, reset) {
 function reset() { set(1, true); } // size 0 won't work
 
 setInterval(function() {
-    var n = Number($('input').attr('size')) + 1;
-    set(n);
+    var now = Date.now();
+    var dif = (now - before)/minute;
+    //console.log(dif);
+    dif = Math.round(dif);
+    //console.log(dif);
+    var num = Number($('input').attr('size')) + dif;
+    set(num);
+    before = now;
 }, minute);
 
 var burrito = {
