@@ -2,123 +2,123 @@ var minute = 60000;
 var before = Date.now();
 
 function Reporter() {
-    var reporter = this;
-    this.$node = false;
-    this.update = function() {
-        if(this.$node) {
-            this.$node.text(format(this.counter));
-        }
+  var reporter = this;
+  this.$node = false;
+  this.update = function() {
+    if(this.$node) {
+      this.$node.text(format(this.counter));
     }
-    this.counter = 0;
-    this.add = function(time) {
-        this.counter += parseInt(time);
-        this.update();
-    };
-    this.set = {
-        node: function($node) {
-            reporter.$node = $node;
-            reporter.update();
-        }
-    };
-    return this;
+  }
+  this.counter = 0;
+  this.add = function(time) {
+    this.counter += parseInt(time);
+    this.update();
+  };
+  this.set = {
+    node: function($node) {
+      reporter.$node = $node;
+      reporter.update();
+    }
+  };
+  return this;
 };
 
 var reporters = {};
 
 [
-    'all',
+  'all',
 ].forEach(function(n) {
-    reporters[n] = new Reporter();
+  reporters[n] = new Reporter();
 });
 
 function set(n, reset) {
-    $('input').attr('size', n);
-    if(reset) { $('input').prop('value', ''); }
+  $('input').attr('size', n);
+  if(reset) { $('input').prop('value', ''); }
 }
 
 function reset() { set(1, true); } // size 0 won't work
 
 setInterval(function() {
-    var now = Date.now();
-    var dif = (now - before)/minute;
-    //console.log(dif);
-    dif = Math.round(dif);
-    //console.log(dif);
-    var num = Number($('input').attr('size')) + dif;
-    set(num);
-    before = now;
+  var now = Date.now();
+  var dif = (now - before)/minute;
+  //console.log(dif);
+  dif = Math.round(dif);
+  //console.log(dif);
+  var num = Number($('input').attr('size')) + dif;
+  set(num);
+  before = now;
 }, minute);
 
 var burrito = {
-    reports: {},
-    append: function(record){
-        var time = record[0];
-        var desc = record[1];
-        h.read(desc);
-        if(h.test) {
-            desc = h.html;
-            h.match.map(function(tag) {
-                if(tag in burrito.reports) {
-                    burrito.reports[tag] += Number(time);
-                } else {
-                    burrito.reports[tag] =  Number(time);
-                }
-            }.bind(this));
+  reports: {},
+  append: function(record){
+    var time = record[0];
+    var desc = record[1];
+    h.read(desc);
+    if(h.test) {
+      desc = h.html;
+      h.match.map(function(tag) {
+        if(tag in burrito.reports) {
+          burrito.reports[tag] += Number(time);
         } else {
-            desc = record[1];
+          burrito.reports[tag] =  Number(time);
         }
-        reporters.all.add(time);
-        $('.report').prepend('<br>', time+' '+desc);
-    },
-    add: function(record) {
-        this.append(record);
-        this.records.push(record);
-        this.save();
-    },
-    save: function() {
-        localStorage['records'] = JSON.stringify(this.records);
-    },
-    load: function() {
-        try {
-            this.records = JSON.parse(localStorage.getItem('records'));
-            this.records.map(this.append);
-            $('.report').prepend('<hr>');
-        } catch(e) {
-            console.log('error parsing '+localStorage['records']);
-            this.records = [];
-        }
-    },
-    clear: function() {
-        this.reports = {};
-        this.records = [];
-        this.save();
-        $('.report').empty();
+      }.bind(this));
+    } else {
+      desc = record[1];
     }
+    reporters.all.add(time);
+    $('.report').prepend('<br>', time+' '+desc);
+  },
+  add: function(record) {
+    this.append(record);
+    this.records.push(record);
+    this.save();
+  },
+  save: function() {
+    localStorage['records'] = JSON.stringify(this.records);
+  },
+  load: function() {
+    try {
+      this.records = JSON.parse(localStorage.getItem('records'));
+      this.records.map(this.append);
+      $('.report').prepend('<hr>');
+    } catch(e) {
+      console.log('error parsing '+localStorage['records']);
+      this.records = [];
+    }
+  },
+  clear: function() {
+    this.reports = {};
+    this.records = [];
+    this.save();
+    $('.report').empty();
+  }
 };
 
 onload = function() {
-    $('input').keyup(function(e) {
-        if(e.which===13) {
-            var $i = $('input');
-            var minutes = $i.attr('size') - 1;
-            var value = crumbify($i.prop('value'), minutes + 1);
-            burrito.add([minutes, value]);
-            reset();
-            var d = new Date();
-            $('.hour').text(d.getHours()+':'+d.getMinutes());
-        }
-    });
-    $('button').click(burrito.clear.bind(burrito));
-    burrito.load();
-    reset();
-    $('input').focus();
-    $(document).on('mouseenter mouseleave', '.report a', function(e) {
-        var report = burrito.reports['#'+$(e.target).attr('data-name')];
-        $('.prompt').text(report).toggle();
-    });
+  $('input').keyup(function(e) {
+    if(e.which===13) {
+      var $i = $('input');
+      var minutes = $i.attr('size') - 1;
+      var value = crumbify($i.prop('value'), minutes + 1);
+      burrito.add([minutes, value]);
+      reset();
+      var d = new Date();
+      $('.hour').text(d.getHours()+':'+d.getMinutes());
+    }
+  });
+  $('button').click(burrito.clear.bind(burrito));
+  burrito.load();
+  reset();
+  $('input').focus();
+  $(document).on('mouseenter mouseleave', '.report a', function(e) {
+    var report = burrito.reports['#'+$(e.target).attr('data-name')];
+    $('.prompt').text(report).toggle();
+  });
 
-    reporters.all.set.node($('.all.reporter'));
+  reporters.all.set.node($('.all.reporter'));
 };
 onpageshow = function() {
-    $('input').focus();
+  $('input').focus();
 }
