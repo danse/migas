@@ -70,7 +70,8 @@ var burrito = {
       desc = record[1];
     }
     reporters.all.add(time);
-    $('.report').prepend('<br>', time+' '+desc);
+    var classyTime = '<span class="time">'+time+'</span>';
+    $('.report').prepend('<br>', classyTime+' '+desc);
   },
   add: function(record) {
     this.append(record);
