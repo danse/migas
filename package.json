@@ -1,5 +1,23 @@
 {
-  "dependencies": {
-    "serve": "~1.2.0"
-  }
+  "name": "crumbs",
+  "description": "minimalist time tracking tool",
+  "version": "0.0.0",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "doctest": "^0.7.1"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/doctest fun.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danse/crumbs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danse/crumbs/issues"
+  },
+  "homepage": "https://github.com/danse/crumbs"
 }
