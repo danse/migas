@@ -1,7 +1,8 @@
 CACHE MANIFEST
-# 0.0.1 - 05 February 2015
+# 0.0.2 - 05 February 2015
 # This is a comment.
 http://danse.github.io/crumbs/index.html
 http://danse.github.io/crumbs/fun.js
 http://danse.github.io/crumbs/index.js
 http://danse.github.io/crumbs/bower_components/jquery/jquery.js
+http://fonts.googleapis.com/css?family=Condiment|Yesteryear|Herr+Von+Muellerhoff|Kaushan+Script|Ubuntu+Mono|Cutive+Mono|Nova+Mono
