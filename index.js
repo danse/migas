@@ -38,7 +38,7 @@ function set(n, reset) {
 
 function reset() { set(1, true); } // size 0 won't work
 
-setInterval(function() {
+function updateInput() {
   var now = Date.now();
   var dif = (now - before)/minute;
   //console.log(dif);
@@ -47,7 +47,9 @@ setInterval(function() {
   var num = Number($('input').attr('size')) + dif;
   set(num);
   before = now;
-}, minute);
+}
+
+setInterval(updateInput, minute);
 
 var burrito = {
   reports: {},
@@ -100,6 +102,7 @@ onload = function() {
   $('input').keyup(function(e) {
     if(e.which===13) {
       var $i = $('input');
+      updateInput();
       var minutes = $i.attr('size') - 1;
       var value = crumbify($i.prop('value'), minutes + 1);
       burrito.add([minutes, value]);
