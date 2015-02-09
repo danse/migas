@@ -47,13 +47,17 @@ function crumbify(s, n) {
 // ['#hash']
 // > h.read('#hash#tag at the beginning').match;
 // ['#hash']
+// > h.read('this is my #hash#tag').html;
+// 'this is my <a data-name="hash" href="javascript:void(0)" class="hashtag">hash</a>tag'
 var h = {
   read: function(s) {
     var r = /\B#([a-zA-Z0-9]+)/g
     this.s = s;
     this.test = r.test(s);
     this.match = s.match(r);
-    this.html = s.replace(r, '<a data-name="$1" href="javascript:void(0)" class="hashtag">$1</a>');
+    this.html = s
+      .replace(r, '<a data-name="$1" href="javascript:void(0)" class="hashtag">$1</a>')
+      .replace(/#/, '');
     return this;
   }
 }
