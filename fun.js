@@ -41,9 +41,15 @@ function crumbify(s, n) {
 // false
 // > h.read('these are #multiple #hashtags').match;
 // ['#multiple', '#hashtags']
+// > h.read('this is a partial #hash#tag').match;
+// ['#hash']
+// > h.read('#hash at the beginning').match;
+// ['#hash']
+// > h.read('#hash#tag at the beginning').match;
+// ['#hash']
 var h = {
   read: function(s) {
-    var r = /#([a-zA-Z0-9]+)/g
+    var r = /\B#([a-zA-Z0-9]+)/g
     this.s = s;
     this.test = r.test(s);
     this.match = s.match(r);
