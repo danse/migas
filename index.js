@@ -51,6 +51,9 @@ function updateInput() {
 
 setInterval(updateInput, minute);
 
+// this is a wrapper around our state, which takes care of storing all
+state changes in local storage, in order to be recoverable on the next
+page load
 var burrito = {
   reports: {},
   append: function(record){
