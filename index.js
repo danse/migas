@@ -23,14 +23,6 @@ function Reporter() {
   return this;
 };
 
-var reporters = {};
-
-[
-  'all',
-].forEach(function(n) {
-  reporters[n] = new Reporter();
-});
-
 function set(n, reset) {
   $('input').attr('size', n);
   if(reset) { $('input').prop('value', ''); }
@@ -51,23 +43,20 @@ function updateInput() {
 
 setInterval(updateInput, minute);
 
-// this is a wrapper around our state, which takes care of storing all
-state changes in local storage, in order to be recoverable on the next
-page load
-var burrito = {
-  reports: {},
-  append: function(record){
+var reporters;
+
+function update(state) {
+  function append(record){
     var time = record[0];
     var desc = record[1];
     h.read(desc);
     if(h.test) {
       desc = h.html;
       h.match.map(function(tag) {
-        if(tag in burrito.reports) {
-          burrito.reports[tag] += Number(time);
-        } else {
-          burrito.reports[tag] =  Number(time);
+        if(!(tag in reporters)) {
+          reporters[tag] = new Reporter();
         }
+        reporters[tag].add(Number(time));
       }.bind(this));
     } else {
       desc = record[1];
@@ -75,9 +64,20 @@ var burrito = {
     reporters.all.add(time);
     var classyTime = '<span class="time">'+time+'</span>';
     $('.report').prepend('<br>', classyTime+' '+desc);
-  },
+  }
+  reporters = {
+    all: new Reporter()
+  };
+  $('.report').empty();
+  state.map(append);
+  $('.report').prepend('<hr>');
+}
+
+// this is a wrapper around our state, which takes care of storing all
+// state changes in local storage, in order to be recoverable on the
+// next page load
+var burrito = {
   add: function(record) {
-    this.append(record);
     this.records.push(record);
     this.save();
   },
@@ -87,18 +87,14 @@ var burrito = {
   load: function() {
     try {
       this.records = JSON.parse(localStorage.getItem('records'));
-      this.records.map(this.append);
-      $('.report').prepend('<hr>');
     } catch(e) {
       console.log('error parsing '+localStorage['records']);
       this.records = [];
     }
   },
   clear: function() {
-    this.reports = {};
     this.records = [];
     this.save();
-    $('.report').empty();
   }
 };
 
@@ -110,18 +106,23 @@ onload = function() {
       var minutes = $i.attr('size') - 1;
       var value = crumbify($i.prop('value'), minutes + 1);
       burrito.add([minutes, value]);
+      update(burrito.records);
       reset();
       var d = new Date();
       $('.hour').text(d.getHours()+':'+d.getMinutes());
     }
   });
-  $('button').click(burrito.clear.bind(burrito));
+  $('button').click(function () {
+    burrito.clear();
+    update(burrito.records);
+  });
   burrito.load();
+  update(burrito.records);
   reset();
   $('input').focus();
   $(document).on('mouseenter mouseleave', '.report a', function(e) {
-    var report = burrito.reports['#'+$(e.target).attr('data-name')];
-    $('.prompt').text(report).toggle();
+    var amount = reporters['#'+$(e.target).attr('data-name')];
+    $('.prompt').text(amount).toggle();
   });
 
   reporters.all.set.node($('.all.reporter'));
