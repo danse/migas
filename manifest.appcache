@@ -1,9 +1,9 @@
 CACHE MANIFEST
-# 0.0.7 - 09 February 2015
+# 0.0.8 - 20 June 2016
 # This is a comment.
 index.html
 fun.js
 index.js
-bower_components/jquery/jquery.js
+https://code.jquery.com/jquery-2.2.4.js
 http://fonts.googleapis.com/css?family=Condiment|Yesteryear|Herr+Von+Muellerhoff|Kaushan+Script|Ubuntu+Mono|Cutive+Mono|Nova+Mono
 http://fonts.gstatic.com/s/ubuntumono/v6/ViZhet7Ak-LRXZMXzuAfkYgp9Q8gbYrhqGlRav_IXfk.woff2

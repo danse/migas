@@ -1,3 +1,4 @@
+var Main = PS["Main"] // let's make this easier to use
 var minute = 60000;
 var before = Date.now();
 
@@ -45,10 +46,10 @@ setInterval(updateInput, minute);
 
 var reporters;
 
-function update(state) {
+function refresh() {
   function append(record){
-    var time = record[0];
-    var desc = record[1];
+    var time = Main.getDuration(record)
+    var desc = Main.getDescription(record)
     h.read(desc);
     if(h.test) {
       desc = h.html;
@@ -58,8 +59,6 @@ function update(state) {
         }
         reporters[tag].add(Number(time));
       }.bind(this));
-    } else {
-      desc = record[1];
     }
     reporters.all.add(time);
     var classyTime = '<span class="time">'+time+'</span>';
@@ -69,7 +68,7 @@ function update(state) {
     all: new Reporter()
   };
   $('.report').empty();
-  state.map(append);
+  Main.getRecords(burrito.state).map(append);
   $('.report').prepend('<hr>');
 }
 
@@ -77,24 +76,29 @@ function update(state) {
 // state changes in local storage, in order to be recoverable on the
 // next page load
 var burrito = {
-  add: function(record) {
-    this.records.push(record);
-    this.save();
+  state: Main.initialState,
+  add: function(number, string) {
+    this.state = Main.addEntry(number)(string)(this.state)
+    this.save()
   },
   save: function() {
-    localStorage['records'] = JSON.stringify(this.records);
+    localStorage['state'] = JSON.stringify(this.state);
   },
   load: function() {
-    try {
-      this.records = JSON.parse(localStorage.getItem('records'));
-    } catch(e) {
-      console.log('error parsing '+localStorage['records']);
-      this.records = [];
+    var stored = localStorage.getItem('state');
+    if (stored) {
+      try {
+        this.state = JSON.parse(stored)
+      } catch(e) {
+        console.log('error parsing '+stored)
+      }
+    } else {
+      console.log('no state saved locally')
     }
   },
   clear: function() {
-    this.records = [];
-    this.save();
+    this.state = Main.initialState
+    this.save()
   }
 };
 
@@ -105,8 +109,8 @@ onload = function() {
       updateInput();
       var minutes = $i.attr('size') - 1;
       var value = crumbify($i.prop('value'), minutes + 1);
-      burrito.add([minutes, value]);
-      update(burrito.records);
+      burrito.add(minutes, value);
+      refresh();
       reset();
       var d = new Date();
       $('.hour').text(d.getHours()+':'+d.getMinutes());
@@ -114,10 +118,10 @@ onload = function() {
   });
   $('button').click(function () {
     burrito.clear();
-    update(burrito.records);
+    refresh();
   });
   burrito.load();
-  update(burrito.records);
+  refresh();
   reset();
   $('input').focus();
   $(document).on('mouseenter mouseleave', '.report a', function(e) {
