@@ -50,7 +50,8 @@ function refresh() {
   function append(record){
     var time = Main.getDuration(record)
     var desc = Main.getDescription(record)
-    h.read(desc);
+    var crumbified = crumbify(desc, time)
+    h.read(crumbified);
     if(h.test) {
       desc = h.html;
       h.match.map(function(tag) {
@@ -62,7 +63,7 @@ function refresh() {
     }
     reporters.all.add(time);
     var classyTime = '<span class="time">'+time+'</span>';
-    $('.report').prepend('<br>', classyTime+' '+desc);
+    $('.report').prepend('<br>', classyTime+' '+crumbified);
   }
   reporters = {
     all: new Reporter()
@@ -108,7 +109,7 @@ onload = function() {
       var $i = $('input');
       updateInput();
       var minutes = $i.attr('size') - 1;
-      var value = crumbify($i.prop('value'), minutes + 1);
+      var value = $i.prop('value')
       burrito.add(minutes, value);
       refresh();
       reset();
