@@ -47,9 +47,9 @@ setInterval(updateInput, minute);
 var reporters;
 
 function refresh() {
-  function append(record){
-    var time = Main.getDuration(record)
-    var desc = Main.getDescription(record)
+  function append(entry){
+    var time = Main.getDuration(entry)
+    var desc = Main.getDescription(entry)
     var crumbified = crumbify(desc, time)
     h.read(crumbified);
     if(h.test) {
@@ -69,7 +69,7 @@ function refresh() {
     all: new Reporter()
   };
   $('.report').empty();
-  Main.getRecords(burrito.state).map(append);
+  Main.getEntries(burrito.state).map(append);
   $('.report').prepend('<hr>');
 }
 
@@ -78,8 +78,12 @@ function refresh() {
 // next page load
 var burrito = {
   state: Main.initialState,
-  add: function(number, string) {
-    this.state = Main.addEntry(number)(string)(this.state)
+  update: function (newState) {
+    this.state = newState
+    this.save()
+  },
+  updateWith: function (f) {
+    this.state = f(this.state)
     this.save()
   },
   save: function() {
@@ -96,10 +100,6 @@ var burrito = {
     } else {
       console.log('no state saved locally')
     }
-  },
-  clear: function() {
-    this.state = Main.initialState
-    this.save()
   }
 };
 
@@ -110,16 +110,21 @@ onload = function() {
       updateInput();
       var minutes = $i.attr('size') - 1;
       var value = $i.prop('value')
-      burrito.add(minutes, value);
+      var d = new Date();
+      burrito.updateWith(Main.addEntry(minutes)(value)(d));
       refresh();
       reset();
-      var d = new Date();
       $('.hour').text(d.getHours()+':'+d.getMinutes());
     }
   });
-  $('button').click(function () {
-    burrito.clear();
+  $('button#clear').click(function () {
+    burrito.update(Main.initialState);
     refresh();
+  });
+  $('button#export').click(function () {
+    var o = Main.exportAsMarginFile(burrito.state);
+    // http://stackoverflow.com/a/14966131/393758
+    window.open(encodeURI("data:text/csv;charset=utf-8,"+JSON.stringify(o)))
   });
   burrito.load();
   refresh();
