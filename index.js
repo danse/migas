@@ -53,7 +53,6 @@ function refresh() {
     var crumbified = crumbify(desc, time)
     h.read(crumbified);
     if(h.test) {
-      desc = h.html;
       h.match.map(function(tag) {
         if(!(tag in reporters)) {
           reporters[tag] = new Reporter();
@@ -63,7 +62,7 @@ function refresh() {
     }
     reporters.all.add(time);
     var classyTime = '<span class="time">'+time+'</span>';
-    $('.report').prepend('<br>', classyTime+' '+crumbified);
+    $('.report').prepend('<br>', classyTime+' ' + h.html);
   }
   reporters = {
     all: new Reporter()
