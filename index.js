@@ -64,9 +64,11 @@ function refresh() {
     var classyTime = '<span class="time">'+time+'</span>';
     $('.report').prepend('<br>', classyTime+' ' + h.html);
   }
+
   reporters = {
     all: new Reporter()
   };
+  reporters.all.set.node($('.all.reporter'));
   $('.report').empty();
   Main.getEntries(burrito.state).map(append);
   $('.report').prepend('<hr>');
@@ -130,11 +132,9 @@ onload = function() {
   reset();
   $('input').focus();
   $(document).on('mouseenter mouseleave', '.report a', function(e) {
-    var amount = reporters['#'+$(e.target).attr('data-name')];
-    $('.prompt').text(amount).toggle();
+    var r = reporters['#'+$(e.target).attr('data-name')];
+    $('.prompt').text(r.counter).toggle();
   });
-
-  reporters.all.set.node($('.all.reporter'));
 };
 onpageshow = function() {
   $('input').focus();
