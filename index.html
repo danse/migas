@@ -9,7 +9,7 @@
     <script src="index.js"></script>
     <style>
       @import url(http://fonts.googleapis.com/css?family=Condiment|Yesteryear|Herr+Von+Muellerhoff|Kaushan+Script|Ubuntu+Mono|Cutive+Mono|Nova+Mono);
-      .issues { float: right; }
+
       .prompt {
           border: 1px solid steelblue;
           width: 100px;
@@ -29,8 +29,10 @@
           color: rgb(150, 0, 0);
           text-decoration: none;
       }
-      .all.reporter {
+      .float-right {
           float: right;
+      }
+      .all.reporter {
           padding: 0 20px;
       }
       .time {
@@ -55,12 +57,16 @@
     </style>
   </head>
   <body>
-    <div id="export">
-      <button>export</button>
-      <a>get your file</a>
+    <div class="float-right">
+      <span id="export">
+        <button>export</button>
+        <a>get your file</a>
+      </span>
+      <span class="all reporter"></span>
+      <a target="_blank" href="https://github.com/danse/crumbs/issues/new">
+        issues
+      </a>
     </div>
-    <a target="_blank" class="issues" href="https://github.com/danse/crumbs/issues/new">issues</a>
-    <span class="all reporter"></span>
     <button id="clear">crumbs</button>
     <span class="hour"></span>
     <input size="1" />
