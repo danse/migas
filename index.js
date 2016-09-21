@@ -122,11 +122,22 @@ onload = function() {
     burrito.update(Main.initialState);
     refresh();
   });
-  $('button#export').click(function () {
-    var o = Main.exportAsMarginFile(burrito.state);
-    // http://stackoverflow.com/a/14966131/393758
-    window.open(encodeURI("data:text/csv;charset=utf-8,"+JSON.stringify(o)))
+  var exportAnchor = '#export a'
+  function toggleExport () { $('#export *').toggle() }
+  $('#export button').click(function () {
+    var s = JSON.stringify(Main.exportAsMarginFile(burrito.state))
+    var b = new Blob([s], { type: 'application/json' })
+    var u = URL.createObjectURL(b)
+    var fileName = 'crumbs-margin-export-' + (new Date()).toISOString() + '.json'
+    $(exportAnchor).attr({
+      'href': u,
+      'download': fileName
+    })
+    toggleExport()
   });
+  $(exportAnchor)
+    .toggle()
+    .click(toggleExport)
   burrito.load();
   refresh();
   reset();
