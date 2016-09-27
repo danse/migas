@@ -2,7 +2,7 @@ module Main where
 
 import Prelude
 import Data.Array (snoc)
-import Data.Time
+import Data.Time (Time)
 import Data.Int (toNumber)
 
 type Entry = {
@@ -16,6 +16,7 @@ type State = {
   -- tagReports :: Map String Int
   }
 
+initialState :: { entries :: Array Entry }
 initialState = { entries: [] }
 
 addEntry :: Number -> String -> Time -> State -> State
