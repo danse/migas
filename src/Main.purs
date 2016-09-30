@@ -56,7 +56,11 @@ fromEntryToMargin r = {
 exportAsMarginFile :: State -> Array Margin
 exportAsMarginFile state = map fromEntryToMargin state.entries
 
+isTag :: String -> Boolean
+isTag t = take 1 t == "#" && length t > 1
+
+cleanTag :: String -> String
+cleanTag = stripChars "#,;."
+
 getTags :: String -> Array String
-getTags = map clean <<< filter isTag <<< split " " 
-  where isTag t = take 1 t == "#" && length t > 1
-        clean = stripChars "#,;."
+getTags = map cleanTag <<< filter isTag <<< split " " 
