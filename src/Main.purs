@@ -1,9 +1,12 @@
 module Main where
 
 import Prelude
-import Data.Array (snoc)
+import Data.Array (snoc, filter)
 import Data.Time (Time)
 import Data.Int (toNumber)
+import Data.String (split, take, length)
+import Data.String.Utils (stripChars)
+-- import Data.Maybe (fromMaybe)
 
 type Entry = {
   start :: Time,
@@ -52,3 +55,8 @@ fromEntryToMargin r = {
 
 exportAsMarginFile :: State -> Array Margin
 exportAsMarginFile state = map fromEntryToMargin state.entries
+
+getTags :: String -> Array String
+getTags = map clean <<< filter isTag <<< split " " 
+  where isTag t = take 1 t == "#" && length t > 1
+        clean = stripChars "#,;."

@@ -15,6 +15,10 @@
     "purescript-datetime": "^1.0.0",
     "purescript-rationals": "^0.4.0",
     "purescript-integers": "^1.1.0",
-    "purescript-prelude": "^1.1.0"
+    "purescript-prelude": "^1.1.0",
+    "purescript-test-unit": "^9.1.0",
+    "purescript-strings": "^1.1.0",
+    "purescript-maybe": "^1.0.0",
+    "purescript-stringutils": "^0.0.3"
   }
 }
