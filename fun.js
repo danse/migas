@@ -1,3 +1,5 @@
+// @flow
+
 // > format(1234)
 // '20 hours, 34 minutes'
 function format(minutes) {
@@ -19,8 +21,8 @@ function hours(minutes) {
 // 'long <span class="extra">message</span>'
 function crumbify(s, n) {
   if(s.length >= n) {
-    var fair = s.slice(0, n);
-    extra = s.slice(n);
+    var fair = s.slice(0, n),
+        extra = s.slice(n);
     return fair + '<span class="extra">' + extra + '</span>'
   } else {
     s += ' '; // for readability
