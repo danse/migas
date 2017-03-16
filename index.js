@@ -1,3 +1,12 @@
+/*
+
+ `refresh` is the main rendering function, called in the handler of
+ many events. It clears the document, then goes through the state and
+ renders it again.
+
+ The state and a few methods associated with it are in `burrito`
+
+ */
 var Main = PS["Main"] // let's make this easier to use
 var minute = 60000;
 var before = Date.now();
