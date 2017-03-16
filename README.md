@@ -26,5 +26,4 @@ time tagged with it will be shown.
 
 #### About the code
 
-Nothing so special here. But the code in `fun.js` is doctested. This
-means that the comments are also actual tests. [Doctest](https://github.com/davidchambers/doctest) is pretty cool, check it out!
+See the [development notes](development.md)
