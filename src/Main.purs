@@ -4,7 +4,7 @@ import Prelude
 import Data.Array (snoc, filter)
 import Data.Time (Time)
 import Data.Int (toNumber)
-import Data.String (split, take, length)
+import Data.String (split, take, length, Pattern(..))
 import Data.String.Utils (stripChars)
 -- import Data.Maybe (fromMaybe)
 
@@ -63,4 +63,4 @@ cleanTag :: String -> String
 cleanTag = stripChars "#,;."
 
 getTags :: String -> Array String
-getTags = map cleanTag <<< filter isTag <<< split " " 
+getTags = map cleanTag <<< filter isTag <<< split (Pattern " ")
