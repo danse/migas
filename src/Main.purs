@@ -1,11 +1,19 @@
 module Main where
 
 import Prelude
-import Data.Array (snoc, filter)
+import Data.Array (snoc, filter, reverse)
 import Data.Time (Time)
-import Data.Int (toNumber)
-import Data.String (split, take, length, Pattern(..))
+import Data.Int (toNumber, round)
+import Data.String (split, take, drop, length, Pattern(..), joinWith)
 import Data.String.Utils (stripChars)
+import Text.Smolder.HTML as HTML
+import Text.Smolder.HTML.Attributes as Attributes
+import Text.Smolder.Markup (text, (!))
+import Text.Smolder.Renderer.String (render)
+import Data.Tuple (Tuple(..), fst, snd)
+import Data.List.Lazy (replicate)
+import Data.Foldable (foldlDefault)
+
 -- import Data.Maybe (fromMaybe)
 
 type Entry = {
@@ -13,6 +21,19 @@ type Entry = {
   duration :: Number,
   description :: String
   }
+
+{-#
+
+-- a DayEnd is a document element that helps visually understand the data
+type DayEnd = {
+  day :: Time,
+  sum :: Number
+}
+
+-- a Mark is a document fragment that gets appended to show recorded values
+-- type Mark = Entry | DayEnd
+
+#-}
 
 type State = {
   entries :: Array Entry
@@ -64,3 +85,24 @@ cleanTag = stripChars "#,;."
 
 getTags :: String -> Array String
 getTags = map cleanTag <<< filter isTag <<< split (Pattern " ")
+
+-- adapt the description length to the amount of minutes passed
+crumbify :: String -> Int -> Tuple String String
+crumbify description minutes =
+  let separatedDots = replicate minutes "."
+      dots = foldlDefault (<>) "" separatedDots
+      concatenated = description <> dots
+  in Tuple (take minutes concatenated) (drop minutes description)
+
+renderEntry :: Entry -> String
+renderEntry e = render $ do
+  HTML.br
+  (HTML.span ! Attributes.className "time") (text (show d))
+  HTML.span (text included)
+  (HTML.span ! Attributes.className "extra") (text extra)
+  where d = round e.duration
+        included = fst $ crumbify e.description d
+        extra = snd $ crumbify e.description d
+
+renderEntries :: State -> String
+renderEntries s = joinWith " " $ reverse $ map renderEntry s.entries

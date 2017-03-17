@@ -56,30 +56,19 @@ setInterval(updateInput, minute);
 var reporters;
 
 function refresh() {
-  function append(entry){
+  function reportTime(entry){
     var time = Main.getDuration(entry)
-    var desc = Main.getDescription(entry)
-    var crumbified = crumbify(desc, time)
-    h.read(crumbified);
-    if(h.test) {
-      h.match.map(function(tag) {
-        if(!(tag in reporters)) {
-          reporters[tag] = new Reporter();
-        }
-        reporters[tag].add(Number(time));
-      }.bind(this));
-    }
     reporters.all.add(time);
-    var classyTime = '<span class="time">'+time+'</span>';
-    $('.report').prepend('<br>', classyTime+' ' + h.html);
   }
 
   reporters = {
     all: new Reporter()
   };
   reporters.all.set.node($('.all.reporter'));
+  Main.getEntries(burrito.state).map(reportTime);
+
   $('.report').empty();
-  Main.getEntries(burrito.state).map(append);
+  $('.report').prepend(Main.renderEntries(burrito.state));
   $('.report').prepend('<hr>');
 }
 

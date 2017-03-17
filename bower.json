@@ -19,6 +19,8 @@
     "purescript-test-unit": "^10.1.0",
     "purescript-strings": "^2.1.0",
     "purescript-maybe": "^2.1.1",
-    "purescript-stringutils": "^0.0.4"
+    "purescript-stringutils": "^0.0.4",
+    "purescript-smolder": "^6.0.1",
+    "purescript-lists": "^3.4.0"
   }
 }
