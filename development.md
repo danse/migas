@@ -4,6 +4,10 @@ The code in `fun.js` is doctested. This means that the comments are
 also actual tests. [Doctest](https://github.com/davidchambers/doctest)
 is pretty cool, check it out!
 
+You can test `fun.js` like this:
+
+    $ ./node_modules/.bin/doctest fun.js 
+
 #### Purescript
 
 I am slowly migrating at least the business logic to Purescript. There

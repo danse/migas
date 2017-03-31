@@ -18,11 +18,12 @@ to your personal recordings!
 
 I'm running this on Chrome, but Firefox should go fine, as well.
 
-### Hashtag reports
+### Time folders
 
-You can prefix any word with an hash (`#`) sign making an hashtag, like in
-`#myticket`, like in twitter. When you'll hover on that word, a sum of all the
-time tagged with it will be shown.
+Add words to the location bar, after a question mark, to start a
+separate logging session. For example, if you add "?second client" to
+the location bar, a new separate session will start, that you can
+export separately
 
 #### About the code
 

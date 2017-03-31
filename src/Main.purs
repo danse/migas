@@ -106,3 +106,8 @@ renderEntry e = render $ do
 
 renderEntries :: State -> String
 renderEntries s = joinWith " " $ reverse $ map renderEntry s.entries
+
+renderFolder :: String -> String -> String
+renderFolder base "" = renderFolder base "default"
+renderFolder base folder = render $ do
+  (HTML.a ! Attributes.href (base <> "?" <> folder)) (text folder)

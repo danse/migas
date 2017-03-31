@@ -60,16 +60,28 @@ function refresh() {
     var time = Main.getDuration(entry)
     reporters.all.add(time);
   }
+  var state = burrito.state
 
   reporters = {
     all: new Reporter()
   };
   reporters.all.set.node($('.all.reporter'));
-  Main.getEntries(burrito.state).map(reportTime);
+  Main.getEntries(state).map(reportTime);
 
   $('.report').empty();
-  $('.report').prepend(Main.renderEntries(burrito.state));
+  $('.report').prepend(Main.renderEntries(state));
   $('.report').prepend('<hr>');
+
+  $('.folders').empty()
+  allKeys()
+    .map(Main.renderFolder(location.href.split('?')[0]))
+    .map(function (e) {
+      $('.folders').prepend(e)
+    })
+}
+
+function stateLabel () {
+  return location.search.substr(1) || "default"
 }
 
 // this is a wrapper around our state, which takes care of storing all
@@ -86,10 +98,10 @@ var burrito = {
     this.save()
   },
   save: function() {
-    localStorage['state'] = JSON.stringify(this.state);
+    localStorage[stateLabel()] = JSON.stringify(this.state);
   },
   load: function() {
-    var stored = localStorage.getItem('state');
+    var stored = localStorage.getItem(stateLabel())
     if (stored) {
       try {
         this.state = JSON.parse(stored)
@@ -147,4 +159,16 @@ onload = function() {
 };
 onpageshow = function() {
   $('input').focus();
+}
+
+function allKeys (maybeN) {
+  var n = maybeN || 0
+  var currentKey = localStorage.key(n)
+  if (currentKey) {
+    var otherKeys = allKeys(n+1)
+    otherKeys.push(currentKey)
+    return otherKeys
+  } else {
+    return []
+  }
 }
