@@ -42,6 +42,11 @@ main = do
         Assert.equal ["thrashwithin"] (getTags "any #thrash#within a word")
       test "ignores a single hash" do
         Assert.equal [] (getTags "nothing # here")
+    suite "autocategorise" do
+      test "produces a list ready to be zipped" do
+        Assert.equal ["a", "b", "a"] (autocategorise ["a", "b", "a"])
+        Assert.equal ["a", "b", "a"] (autocategorise ["a", "b", "c a"])
+        Assert.equal ["a", "c", "c"] (autocategorise ["a", "b c", "c d"])
   -- these fail because of a maximum call stack size, since when i
   -- imported them from Pangolin
   quickCheck crumbify1
