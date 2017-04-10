@@ -17,3 +17,7 @@ from Purescript
 #### App Cache
 
 The manifest here is still maintained manually
+
+#### Deployment
+
+See the [deployment notes](deployment.md)
