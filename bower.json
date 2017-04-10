@@ -20,6 +20,17 @@
     "purescript-maybe": "^2.1.1",
     "purescript-stringutils": "^0.0.4",
     "purescript-smolder": "^6.0.1",
-    "purescript-lists": "^3.4.0"
+    "purescript-lists": "^3.4.0",
+    "purescript-maps": "2",
+    "purescript-sets": "2",
+    "purescript-monoid": "2",
+    "purescript-arrays": "3"
+  },
+  "resolutions": {
+    "purescript-prelude": "^2.4.0",
+    "purescript-maybe": "^2.1.1",
+    "purescript-monoid": "^2.0.0",
+    "purescript-either": "^2.0.0",
+    "purescript-maps": "2"
   }
 }
