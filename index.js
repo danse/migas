@@ -78,6 +78,8 @@ function refresh() {
     .map(function (e) {
       $('.folders').prepend(e)
     })
+
+  change(Main.getChartData(state))
 }
 
 function stateLabel () {

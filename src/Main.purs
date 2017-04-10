@@ -12,8 +12,14 @@ import Text.Smolder.HTML.Attributes as Attributes
 import Text.Smolder.Markup (text, (!), MarkupM)
 import Text.Smolder.Renderer.String (render)
 import Data.List.Lazy (replicate, foldl)
+import Data.List.Types (List)
 import Data.Foldable (fold)
 import Autocategorise (classifier)
+import Data.Map as Map
+import Data.Maybe as Maybe
+import Data.Semigroup (class Semigroup)
+import Data.Monoid (class Monoid)
+-- import Data.Int (toNumber)
 
 -- import Data.Maybe (fromMaybe)
 
@@ -175,3 +181,27 @@ renderFolder :: String -> String -> String
 renderFolder base "" = renderFolder base "default"
 renderFolder base folder = render $ do
   (HTML.a ! Attributes.href (base <> "?" <> folder)) (text folder)
+
+type ChartData = { label :: String, value :: Number }
+
+newtype ChartStats = ChartStats (Map.Map String Number)
+
+instance semigroupChartStats :: Semigroup ChartStats where
+  append (ChartStats a) (ChartStats b) = ChartStats (Map.unionWith (+) a b)
+instance monoidChartStats :: Monoid ChartStats where
+  mempty = ChartStats (Map.empty)
+
+lookupCharStats k (ChartStats c) = Map.lookup k c
+keysCharStats (ChartStats c) = Map.keys c
+
+getChartData :: State -> Array ChartData
+getChartData s =
+  let entryDescription (Entry e) = e.description
+      entryDuration (Entry e) = e.duration
+      classify = classifier (map entryDescription s.entries)
+      makeSingleton (Entry e) = ChartStats (Map.singleton (classify e.description) e.duration)
+      allStats = map makeSingleton s.entries
+      unifiedStats = fold allStats
+      toValue k = Maybe.fromMaybe 0.0 (lookupCharStats k unifiedStats)
+      toData k = { label: k, value: toValue k }
+  in Array.fromFoldable (map toData (keysCharStats unifiedStats))
