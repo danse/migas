@@ -4,9 +4,10 @@ import Prelude
 import Data.Set as Set
 import Data.Map as Map
 import Data.Array as Array
+import Data.List as List
 import Data.String as String
 import Data.Tuple as Tuple
-import Data.Maybe (Maybe(..), fromMaybe)
+import Data.Maybe (Maybe(..), fromMaybe, isJust)
 import Data.Foldable (fold)
 import Data.Semigroup (class Semigroup)
 import Data.Monoid (class Monoid)
@@ -19,15 +20,26 @@ instance monoidStats :: Monoid Stats where
   mempty = Stats (Map.empty)
 
 getStats :: Array String -> Stats
-getStats = Stats <<< fold <<< map (\x -> Map.singleton x 1)
+getStats = fold <<< map (\x -> Stats (Map.singleton x 1))
 
-mostFrequent :: Map.Map String Int -> Array String -> Maybe String
-mostFrequent m = Array.head <<< map Tuple.snd <<< sort <<< map enhance
-  where sort = Array.sortBy (\ a b -> compare (Tuple.fst a) (Tuple.fst b))
-        enhance x = Tuple.Tuple (fromMaybe 0 (Map.lookup x m)) x
+showStats :: Stats -> List.List (Tuple.Tuple String (Maybe Int))
+showStats (Stats s) = map (\k -> Tuple.Tuple k (Map.lookup k s))(Map.keys s)
+
+compareFirstJust :: Tuple.Tuple (Maybe Int) String -> Tuple.Tuple (Maybe Int) String -> Ordering
+compareFirstJust (Tuple.Tuple (Just i1) _) (Tuple.Tuple (Just i2) _) = compare i2 i1
+compareFirstJust _ _ = EQ
+
+mostFrequentTuples :: Stats -> Array String -> Array (Tuple.Tuple (Maybe Int) String)
+mostFrequentTuples (Stats m) = sort <<< filter <<< map enhance
+  where sort = Array.sortBy compareFirstJust
+        filter = Array.filter (isJust <<< Tuple.fst)
+        enhance x = Tuple.Tuple (Map.lookup x m) x
+
+mostFrequent :: Stats -> Array String -> Array String
+mostFrequent s = map Tuple.snd <<< mostFrequentTuples s
 
 classify :: Stats -> Array String -> String
-classify (Stats m) s = fromMaybe "~ empty ~" (mostFrequent m s)
+classify s = fromMaybe "~ empty ~" <<< Array.head <<< mostFrequent s
 
 stopWords = Set.fromFoldable [
   "this",
