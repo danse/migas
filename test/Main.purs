@@ -13,7 +13,7 @@ import Control.Monad.Aff.AVar (AVAR)
 import Test.QuickCheck (quickCheck)
 import Data.Tuple (fst, snd, Tuple(..))
 import Data.String (length)
-import Main (crumbify, getTags)
+import Main (crumbify, getTags, processDescription, Shaped(..), DescriptionSection(..))
 import Autocategorise (classifier, mostFrequent, getStats, mostFrequentTuples, Stats(..), showStats)
 import Data.Maybe (Maybe(..))
 import Data.Map as Map
@@ -73,6 +73,9 @@ main = do
         Assert.equal "b" (classifier ["d", "b", "b"] "d b")
         Assert.equal "c" (classifier ["d", "b", "c", "c", "c d"] "d b c")
         Assert.equal "c" (classifier ["c b"] "c b")
+    suite "processDescription" do
+      test "category overlapping the colour boundary" do
+        Assert.equal (Shaped { solid: [Plain "this", Linked "category"], grey: [] }) (processDescription ["category"] "this category" 7)
   -- these fail because of a maximum call stack size, since when i
   -- imported them from Pangolin
   -- quickCheck crumbify1

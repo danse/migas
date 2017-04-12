@@ -13,7 +13,7 @@ import Text.Smolder.Markup (text, (!), MarkupM)
 import Text.Smolder.Renderer.String (render)
 import Data.List.Lazy (replicate, foldl)
 import Data.List.Types (List)
-import Data.Foldable (fold)
+import Data.Foldable (fold, foldlDefault)
 import Autocategorise (classifier)
 import Data.Map as Map
 import Data.Maybe as Maybe
@@ -42,15 +42,33 @@ section.
 #-}
 
 data DescriptionSection = Plain String | Linked String
+instance eqDescriptionSection :: Eq DescriptionSection where
+  eq (Plain s1) (Plain s2) = eq s1 s2
+  eq (Linked s1) (Linked s2) = eq s1 s2
+  eq _ _ = false
+instance showDescriptionSection :: Show DescriptionSection where
+  show (Plain s) = "Plain " <> show s
+  show (Linked s) = "Linked " <> show s
+
+descriptionSectionLength :: DescriptionSection -> Int
+descriptionSectionLength (Plain s) = length s
+descriptionSectionLength (Linked s) = length s
+
+descriptionSectionArrayLength :: Array DescriptionSection -> Int
+descriptionSectionArrayLength = foldlDefault f 0
+  where f b a = b + descriptionSectionLength a
 
 sectionLength :: DescriptionSection -> Int
 sectionLength (Plain s) = length s
 sectionLength (Linked s) = length s
 
-type ProcessedDescription = {
-     solid :: Array DescriptionSection,
-     grey :: Array DescriptionSection
-}
+newtype Shaped a = Shaped { solid :: a, grey :: a }
+type ProcessedDescription = Shaped (Array DescriptionSection)
+
+instance eqShaped :: Eq a => Eq (Shaped a) where
+  eq (Shaped p1) (Shaped p2) = eq p1.solid p2.solid && eq p1.grey p2.grey
+instance showShaped :: Show a => Show (Shaped a) where
+  show (Shaped a) = "Shaped solid: " <> show a.solid <> " grey: " <> show a.grey
 
 newtype Entry = Entry {
   start :: Time,
@@ -149,7 +167,7 @@ processDescription categories description minutes =
       plainGrey = drop minutes description
       solid = linkCategories categories plainSolid
       grey = linkCategories categories plainGrey
-  in { solid: crumbify minutes solid, grey: grey }
+  in Shaped { solid: crumbify minutes solid, grey: grey }
 
 markupDescriptionSection :: DescriptionSection -> MarkupM _ Unit
 markupDescriptionSection (Plain s) = HTML.span (text (s <> " "))
@@ -171,7 +189,7 @@ renderEntry classify (Entry entry) = render $ do
   where dur = round entry.duration
         des = entry.description
         cat = classify des
-        processed = processDescription [cat] des dur
+        processed = (\ (Shaped r) -> r) (processDescription [cat] des dur)
 
 renderEntries :: State -> String
 renderEntries s = joinWith " " $ reverse $ map (renderEntry classify) s.entries
