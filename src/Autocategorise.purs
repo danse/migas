@@ -66,5 +66,5 @@ tokenise = filter <<< split
         split = String.split (String.Pattern " ")
 
 classifier :: Array String -> String -> String
-classifier sentences = (classify (getStats sentences) <<< tokenise)
-  where stats = (getStats <<< (Array.concat <<< map tokenise)) sentences
+classifier sentences = classify stats <<< tokenise
+  where stats = (getStats <<< Array.concat <<< map tokenise) sentences

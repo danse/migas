@@ -66,11 +66,13 @@ main = do
       test "works as expected" do
         Assert.equal ["a", "b"] (mostFrequent (getStats ["b", "a", "a"]) ["b", "a"])
         Assert.equal ["c", "a", "b"] (mostFrequent (getStats ["b", "a", "c", "a", "c", "c"]) ["c", "b", "a"])
+        Assert.equal ["a", "b"] (mostFrequent (getStats ["a", "b"]) ["a", "b"])
     suite "classifier" do
       test "works as expected" do
         Assert.equal "d" (classifier ["d", "d"] "b d")
         Assert.equal "b" (classifier ["d", "b", "b"] "d b")
         Assert.equal "c" (classifier ["d", "b", "c", "c", "c d"] "d b c")
+        Assert.equal "c" (classifier ["c b"] "c b")
   -- these fail because of a maximum call stack size, since when i
   -- imported them from Pangolin
   -- quickCheck crumbify1
