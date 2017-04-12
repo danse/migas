@@ -15,3 +15,5 @@ libraries.
 - checkout to gh-page and rebase
 - build Purescript assets
 - force push
+
+When switching back to master, it is necessary to run `bower install` again
