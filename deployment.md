@@ -8,3 +8,10 @@ Also remove `pure.js` from `.gitignore`.
 
 The manifest needs to be updated, including remote dependencies like
 libraries.
+
+#### What i typically do
+
+- update the version in the manifest
+- checkout to gh-page and rebase
+- build Purescript assets
+- force push
