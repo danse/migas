@@ -13,26 +13,13 @@ import Control.Monad.Aff.AVar (AVAR)
 import Test.QuickCheck (quickCheck)
 import Data.Tuple (fst, snd, Tuple(..))
 import Data.String (length)
-import Main (crumbify, getTags, processDescription, Shaped(..), DescriptionSection(..))
+import Main (crumbify, getTags, processDescription, Shaped(..), DescriptionSection(..), takeSections, dropSections)
 import Autocategorise (classifier, mostFrequent, getStats, mostFrequentTuples, Stats(..), showStats)
 import Data.Maybe (Maybe(..))
 import Data.Map as Map
 import Data.Array (fold)
 import Data.List as List
 import Data.List ((:), List(..))
-
-{-#
-
-crumbify1 :: String -> Int -> Boolean
-crumbify1 desc minutes = 
-  minutes == length returned
-  where returned = fst $ crumbify desc minutes
-
-crumbify2 :: String -> Int -> Boolean
-crumbify2 desc minutes = (length rest) <= ((length desc) - minutes)
-  where rest = snd $ crumbify desc minutes
-
-#-}
 
 main :: forall e. Eff (
   console :: CONSOLE,
@@ -42,6 +29,7 @@ main :: forall e. Eff (
   random :: RANDOM
    | e) Unit                      
 main = do
+  quickCheck (\ x -> takeSections x [] == [])     
   runTest $ do
     suite "getTags" do
       test "parses hashtags" do
@@ -76,7 +64,31 @@ main = do
     suite "processDescription" do
       test "category overlapping the colour boundary" do
         Assert.equal (Shaped { solid: [Plain "this", Linked "category"], grey: [] }) (processDescription ["category"] "this category" 7)
-  -- these fail because of a maximum call stack size, since when i
-  -- imported them from Pangolin
-  -- quickCheck crumbify1
-  -- quickCheck crumbify2
+      test "short description, many minutes" do
+        Assert.equal (Shaped { solid: [Plain "", Plain "......."], grey: [] }) (processDescription [] "" 7)
+    suite "takeSections" do
+      test "works in some basic cases" do
+        Assert.equal [Plain "first"] (takeSections 3 [Plain "first", Plain "second"])
+        Assert.equal [Plain "a"] (takeSections 1 [Plain "a", Plain "b", Plain "c"])
+        Assert.equal [Plain "a", Plain "b", Plain "c"] (takeSections 30 [Plain "a", Plain "b", Plain "c"])
+      test "works with empty sections" do
+        Assert.equal [] (takeSections 3 [])
+      test "works with zero" do
+        Assert.equal [] (takeSections 0 [])
+        Assert.equal [] (takeSections 0 [Plain "some"])
+      test "works with a negative number" do
+        Assert.equal [] (takeSections (-1) [])
+    suite "dropSections" do
+      test "works in a basic case" do
+        Assert.equal [Plain "second"] (dropSections 3 [Plain "first", Plain "second"])
+      test "works with empty sections" do
+        Assert.equal [] (dropSections 3 [])
+      test "works with zero" do
+        Assert.equal [] (dropSections 0 [])
+    suite "crumbify" do
+      test "basic use cases" do
+        Assert.equal [Plain "word", Plain "......"] (crumbify 10 [Plain "word"])
+      test "some corner cases" do
+        Assert.equal [Plain ".........."] (crumbify 10 [])
+        Assert.equal [] (crumbify 0 [])
+        Assert.equal [Plain "word"] (crumbify 0 [Plain "word"])

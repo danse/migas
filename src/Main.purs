@@ -157,16 +157,32 @@ produceCrumbs i = Plain (foldl (<>) "" (replicate i "."))
 crumbify :: Int -> Array DescriptionSection -> Array DescriptionSection
 crumbify minutes sections = f (minutes - sum (map sectionLength sections))
   where f delta
-          | delta > 0 = sections <> [produceCrumbs delta]
+          | delta > 1 = sections <> [produceCrumbs (delta)]
           | otherwise = sections
         sum = Array.foldl (+) 0
 
+shorten :: forall a. Array a -> Array a
+shorten a = case Array.unsnoc a of
+  Maybe.Nothing -> []
+  Maybe.Just { init: xs, last: x } -> xs
+
+-- take the minimum amount of description sections such that the sum
+-- of their lengths is greater or equal the number of minutes
+takeSections :: Int -> Array DescriptionSection -> Array DescriptionSection
+takeSections _ [] = []
+takeSections m a
+  | descriptionSectionArrayLength (shorten a) >= m = takeSections m (shorten a)
+  | otherwise = a
+
+dropSections :: Int -> Array DescriptionSection -> Array DescriptionSection
+dropSections m a = Array.drop (Array.length taken) a
+  where taken = takeSections m a
+
 processDescription :: Array String -> String -> Int -> ProcessedDescription
 processDescription categories description minutes =
-  let plainSolid = take minutes description
-      plainGrey = drop minutes description
-      solid = linkCategories categories plainSolid
-      grey = linkCategories categories plainGrey
+  let sections = linkCategories categories description
+      solid = takeSections minutes sections
+      grey = dropSections minutes sections
   in Shaped { solid: crumbify minutes solid, grey: grey }
 
 markupDescriptionSection :: DescriptionSection -> MarkupM _ Unit
