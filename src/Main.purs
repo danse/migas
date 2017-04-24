@@ -186,15 +186,18 @@ processDescription categories description minutes =
   in Shaped { solid: crumbify minutes solid, grey: grey }
 
 markupDescriptionSection :: DescriptionSection -> MarkupM _ Unit
-markupDescriptionSection (Plain s) = HTML.span (text (s <> " "))
-markupDescriptionSection (Linked s) = (HTML.a ! Attributes.href s) (text (s <> " "))
+markupDescriptionSection (Plain s) = HTML.span (text (s))
+markupDescriptionSection (Linked s) = (HTML.a ! Attributes.href s) (text (s))
 
 -- I'm looking for a function Monad m, Foldable f => f m -> m
 foldHTML :: Array (HTML.Html _) -> (HTML.Html _)
 foldHTML = fold
 
 markupDescriptionSections :: Array DescriptionSection -> MarkupM _ Unit
-markupDescriptionSections = foldHTML <<< map markupDescriptionSection
+markupDescriptionSections = foldHTML <<< map render
+  where render s = do
+          markupDescriptionSection s
+          HTML.span (text " ")
 
 renderEntry :: (String -> String) -> Entry -> String
 renderEntry classify (Entry entry) = render $ do
