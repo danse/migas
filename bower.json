@@ -24,7 +24,9 @@
     "purescript-maps": "2",
     "purescript-sets": "2",
     "purescript-monoid": "2",
-    "purescript-arrays": "3"
+    "purescript-arrays": "3",
+    "d3": "3",
+    "jquery": "2"
   },
   "resolutions": {
     "purescript-prelude": "^2.4.0",
