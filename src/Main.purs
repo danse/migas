@@ -78,14 +78,15 @@ newtype Entry = Entry {
 
 {-#
 
--- a DayEnd is a document element that helps visually understand the data
+-- a DayEnd is a space for summarising information about a day of
+-- data. At least it can mark the day change
 type DayEnd = {
   day :: Time,
   sum :: Number
 }
 
--- a Mark is a document fragment that gets appended to show recorded values
--- type Mark = Entry | DayEnd
+-- a Segment is a document fragment that gets appended to the main log
+-- type Segment = Entry | DayEnd
 
 #-}
 
