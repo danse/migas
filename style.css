@@ -1,5 +1,11 @@
 @import url(http://fonts.googleapis.com/css?family=Condiment|Yesteryear|Herr+Von+Muellerhoff|Kaushan+Script|Ubuntu+Mono|Cutive+Mono|Nova+Mono);
 
+@media only screen and (max-width: 1200px) {
+    #chart {
+        display: none
+    }
+}
+
 .prompt {
     border: 1px solid steelblue;
     width: 100px;
