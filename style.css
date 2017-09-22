@@ -19,7 +19,7 @@
     margin-left: -50px;
 }
 .extra {
-    color: gainsboro;
+    color: #5c4962;
 }
 .hashtag {
     color: rgb(150, 0, 0);
@@ -40,6 +40,11 @@ body {
    */
     font-family: 'Ubuntu Mono', cursive;
     padding: 7vh 6vw;
+    background-color: #3a1f53;
+    color: #9c9c58;
+}
+a, a:visited {
+    color: #9c9c58;
 }
 input {
     font-family: 'Ubuntu Mono', sans-serif;
