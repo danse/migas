@@ -42,6 +42,10 @@ body {
     padding: 7vh 6vw;
     background-color: #3a1f53;
     color: #9c9c58;
+    fill: #9c9c58;
+}
+#chart .connection {
+    stroke: #9c9c58;
 }
 a, a:visited {
     color: #9c9c58;

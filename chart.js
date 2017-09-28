@@ -84,6 +84,7 @@ function change(data) {
 
   text.enter()
     .append("text")
+    .attr("class", "background-stroke")
     .attr("dy", ".35em")
     .text(function(d) {
       return d.data.label;
@@ -124,7 +125,8 @@ function change(data) {
 	.data(pie(data), key);
   
   polyline.enter()
-    .append("polyline");
+    .append("polyline")
+    .attr("class", "connection");
 
   polyline.transition().duration(1000)
     .attrTween("points", function(d){
