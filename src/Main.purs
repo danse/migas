@@ -198,7 +198,7 @@ markupDescriptionSections :: Array DescriptionSection -> MarkupM _ Unit
 markupDescriptionSections = foldHTML <<< map render
   where render s = do
           markupDescriptionSection s
-          HTML.span (text " ")
+          text " "
 
 renderEntry :: (String -> String) -> Entry -> String
 renderEntry classify (Entry entry) = render $ do
