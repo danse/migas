@@ -14,7 +14,7 @@ import Test.QuickCheck (quickCheck)
 import Data.Tuple (fst, snd, Tuple(..))
 import Data.String (length)
 import Main (crumbify, getTags, processDescription, Shaped(..), DescriptionSection(..), takeSections, dropSections)
-import Autocategorise (classifier, mostFrequent, getStats, mostFrequentTuples, Stats(..), showStats)
+import Autocategorise (classifier, mostFrequent, getStats, mostFrequentTuples, Stats(..), showStats, tokenise)
 import Data.Maybe (Maybe(..))
 import Data.Map as Map
 import Data.Array (fold)
@@ -61,6 +61,12 @@ main = do
         Assert.equal "b" (classifier ["d", "b", "b"] "d b")
         Assert.equal "c" (classifier ["d", "b", "c", "c", "c d"] "d b c")
         Assert.equal "c" (classifier ["c b"] "c b")
+      test "is affected by position when even" do
+        Assert.equal "c" (classifier ["c b", "b c"] "c b")
+        Assert.equal "b" (classifier ["c b", "b c"] "b c")
+      test "is not affected by position when there is a majority" do
+        Assert.equal "b" (classifier ["c b", "b c", "b"] "b c")
+        Assert.equal "b" (classifier ["c b", "b c", "b"] "c b")
     suite "processDescription" do
       test "category overlapping the colour boundary" do
         Assert.equal (Shaped { solid: [Plain "this", Linked "category"], grey: [] }) (processDescription ["category"] "this category" 7)
@@ -92,3 +98,6 @@ main = do
         Assert.equal [Plain ".........."] (crumbify 10 [])
         Assert.equal [] (crumbify 0 [])
         Assert.equal [Plain "word"] (crumbify 0 [Plain "word"])
+    suite "tokenise" do
+      test "works as expected" do
+        Assert.equal ["funky", "tokens"] (tokenise "funky tokens")
