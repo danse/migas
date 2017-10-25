@@ -1,7 +1,7 @@
 module Main where
 
 import Prelude
-import Data.Array (snoc, filter, reverse)
+import Data.Array (snoc, filter, reverse, head, tail)
 import Data.Array as Array
 import Data.Time (Time)
 import Data.Int (toNumber, round)
@@ -49,6 +49,14 @@ instance eqDescriptionSection :: Eq DescriptionSection where
 instance showDescriptionSection :: Show DescriptionSection where
   show (Plain s) = "Plain " <> show s
   show (Linked s) = "Linked " <> show s
+
+intersperse :: forall a. a -> Array a -> Array a
+intersperse i [] = []
+intersperse i [e] = [e]
+intersperse i l = a <> intersperse i b
+  where a = Maybe.maybe [] f (head l)
+        f j = [j, i]
+        b = Maybe.maybe [] id (tail l)
 
 descriptionSectionLength :: DescriptionSection -> Int
 descriptionSectionLength (Plain s) = length s
