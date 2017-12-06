@@ -41,14 +41,14 @@ body {
     font-family: 'Ubuntu Mono', cursive;
     padding: 7vh 6vw;
     background-color: #3a1f53;
-    color: #9c9c58;
-    fill: #9c9c58;
+    color: #efef70;
+    fill: #efef70;
 }
 #chart .connection {
-    stroke: #9c9c58;
+    stroke: #efef70;
 }
 a, a:visited {
-    color: #9c9c58;
+    color: #efef70;
 }
 input {
     font-family: 'Ubuntu Mono', sans-serif;
