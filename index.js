@@ -72,7 +72,6 @@ function refresh() {
 
   $('.report').empty();
   $('.report').prepend(Main.renderEntries(state));
-  $('.report').prepend('<hr>');
 
   $('.folders').empty()
   allKeys()

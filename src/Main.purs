@@ -196,7 +196,7 @@ processDescription categories description minutes =
 
 markupDescriptionSection :: DescriptionSection -> MarkupM _ Unit
 markupDescriptionSection (Plain s) = HTML.span (text (s))
-markupDescriptionSection (Linked s) = (HTML.a ! Attributes.href s) (text (s))
+markupDescriptionSection (Linked s) = (HTML.span ! Attributes.className "category") (text (s))
 
 -- I'm looking for a function Monad m, Foldable f => f m -> m
 foldHTML :: Array (HTML.Html _) -> (HTML.Html _)
