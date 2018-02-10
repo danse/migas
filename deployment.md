@@ -1,19 +1,23 @@
-An old page with the previous version of Crumbs can be kept running,
-with the new one open in a different tab.
 
-In the `gh-pages` branch, it's necessary to commit dependencies in the
-`bower_components` dir.
+here there are notes that can help for local or remote deployment
 
-Also remove `pure.js` from `.gitignore`.
+an old page with the previous version of crumbs can be kept running,
+with the new one open in a different tab
 
-The manifest needs to be updated, including remote dependencies like
-libraries.
+in the `gh-pages` branch, it's necessary to commit dependencies in the
+`bower_components` dir
 
-#### What i typically do
+also remove `pure.js` from `.gitignore`. There could be a commit in
+gh-pages that already does that
+
+the manifest needs to be updated, including remote dependencies like
+libraries
+
+#### what i typically do
 
 - update the version in the manifest
 - checkout to gh-page and rebase
 - build Purescript assets
 - force push
 
-When switching back to master, it is necessary to run `bower install` again
+when switching back to master, it is necessary to run `bower install` again
