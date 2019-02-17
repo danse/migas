@@ -11,8 +11,6 @@ var Main = PS["Main"] // let's make this easier to use
 var minute = 60000;
 var before = Date.now();
 
-function getInput () { return $('input') }
-
 function Reporter() {
   var reporter = this;
   this.$node = false;
@@ -36,8 +34,8 @@ function Reporter() {
 };
 
 function set(n, reset) {
-  getInput().attr('size', n);
-  if(reset) { getInput().prop('value', ''); }
+  $('input').attr('size', n);
+  if(reset) { $('input').prop('value', ''); }
 }
 
 function reset() { set(1, true); } // size 0 won't work
@@ -48,7 +46,7 @@ function updateInput() {
   //console.log(dif);
   dif = Math.round(dif);
   //console.log(dif);
-  var num = Number(getInput().attr('size')) + dif;
+  var num = Number($('input').attr('size')) + dif;
   set(num);
   before = now;
 }
@@ -118,9 +116,9 @@ var burrito = {
 };
 
 onload = function() {
-  getInput().keyup(function(e) {
+  $('input').keyup(function(e) {
     if(e.which===13) {
-      var $i = getInput();
+      var $i = $('input')
       updateInput();
       var minutes = $i.attr('size') - 1;
       var value = $i.prop('value')
@@ -154,14 +152,21 @@ onload = function() {
   burrito.load();
   refresh();
   reset();
-  getInput().focus();
-  $(document).on('mouseenter mouseleave', '.report a', function(e) {
-    var r = reporters['#'+$(e.target).attr('data-name')];
-    $('.prompt').text(r.counter).toggle();
-  });
+  $('input').focus();
+  $(document)
+    .on('mouseenter mouseleave', '.report a', function(e) {
+      var r = reporters['#'+$(e.target).attr('data-name')];
+      $('.prompt').text(r.counter).toggle();
+    })
+    .on('keypress', function (ev) {
+      if (ev.key === '/') {
+        $('input').focus();
+        ev.preventDefault();
+      }
+    });
 };
 onpageshow = function() {
-  getInput().focus();
+  $('input').focus();
 }
 
 function allKeys (maybeN) {
