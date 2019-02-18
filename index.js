@@ -152,7 +152,6 @@ onload = function() {
   burrito.load();
   refresh();
   reset();
-  $('input').focus();
   $(document)
     .on('mouseenter mouseleave', '.report a', function(e) {
       var r = reporters['#'+$(e.target).attr('data-name')];
@@ -165,9 +164,6 @@ onload = function() {
       }
     });
 };
-onpageshow = function() {
-  $('input').focus();
-}
 
 function allKeys (maybeN) {
   var n = maybeN || 0
