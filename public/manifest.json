@@ -1,0 +1,19 @@
+{
+  "short_name": "migas",
+  "name": "migas: am i tracking?",
+  "description": "time tracking to forget",
+  "icons": [{
+    "src": "icon-192x192.png",
+    "type": "image/png",
+    "sizes": "192x192"
+    }, {
+    "src": "icon-512x512.png",
+    "type": "image/png",
+    "sizes": "512x512"
+  }],
+  "start_url": "/?default",
+  "background_color": "#3367D6",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#3367D6"
+}

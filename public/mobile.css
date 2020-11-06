@@ -1,0 +1,18 @@
+
+.time {
+    display: inline-block;
+    min-width: 2em;
+}
+
+.report {
+    font-family: monospace;
+}
+
+.category {
+    font-style: oblique;
+}
+
+/* ready to turn into a new class */
+.extra, .time {
+    color: lightgray;
+}

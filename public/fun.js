@@ -4,7 +4,7 @@
 // '20 hours, 34 minutes'
 function format(minutes) {
   var a = hours(minutes);
-  return a[0] + ' hours, ' + a[1] + ' minutes';
+  return a[0] + ' ore, ' + a[1] + ' minuti';
 }
 
 // > hours(1234)

@@ -133,6 +133,9 @@ onload = function() {
     burrito.update(Main.initialState);
     refresh();
   });
+  $('button#drop').click(function () {
+    reset();
+  });
   var exportAnchor = '#export a'
   function toggleExport () { $('#export *').toggle() }
   $('#export button').click(function () {

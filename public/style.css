@@ -1,22 +1,18 @@
 //@import url(http://fonts.googleapis.com/css?family=Condiment|Yesteryear|Herr+Von+Muellerhoff|Kaushan+Script|Ubuntu+Mono|Cutive+Mono|Nova+Mono);
 
+/*
 @media only screen and (max-width: 1200px) {
     #chart {
-        display: none
+        display: none;
     }
 }
+*/
 
-.prompt {
-    border: 1px solid steelblue;
-    width: 100px;
-    padding: 10px;
-    z-index: 2;
-    background: white;
-    text-align: center;
+/* it's like a section with visible borders, created to work on some
+   display constraints for mobile */
+.contained { 
+    border: 1px solid gray;
     border-radius: 4px;
-    position: fixed;
-    left: 50%;
-    margin-left: -50px;
 }
 .extra {
     color: #5c4962;
@@ -40,9 +36,10 @@ body {
    */
     font-family: 'Ubuntu Mono', cursive;
     padding: 7vh 6vw;
-    background-color: #3a1f53;
+    background-color: #535353;
     color: #ffb6fc;
     fill: #ffb6fc;
+    font-size: 4vw;
 }
 .category {
     font-weight: bold;
@@ -66,3 +63,21 @@ input {
 .folders a {
     margin: 1em;
 }
+/*
+
+there was an empty div.prompt, it shows centered, not sure for what
+although it may work as an editable replacing the input
+
+.prompt {
+    border: 1px solid steelblue;
+    width: 100px;
+    padding: 10px;
+    z-index: 2;
+    background: white;
+    text-align: center;
+    border-radius: 4px;
+    position: fixed;
+    left: 50%;
+    margin-left: -50px;
+}
+*/
