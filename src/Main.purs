@@ -213,10 +213,10 @@ markupDescriptionSections = foldHTML <<< map render
 
 renderEntry :: (String -> String) -> Entry -> String
 renderEntry classify (Entry entry) = render $ do
-  HTML.br
   (HTML.span ! Attributes.className "time") (text (show dur))
   markupDescriptionSections processed.solid
   (HTML.span ! Attributes.className "extra") (markupDescriptionSections processed.grey)
+  HTML.br
   where dur = round entry.duration
         des = entry.description
         cat = classify des

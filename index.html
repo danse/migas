@@ -15,25 +15,26 @@
   <body>
     <div class="folders"></div>
     <div>
-      <button id="drop">drop</button>
+      <span id="elapsed" class="time"></span>
       <input size="1" autofocus />
     </div>
-    <div style="display:none" class="prompt"></div>
-    <div style="clear: both"></div>
-    <div id="chart"></div>
-    <div class="report"></div>
-    <script src="chart.js"></script>
+    <div class="report">
+    </div>
     <div>
       <a target="_blank" href="https://github.com/danse/crumbs/issues/new">issues</a>
       <span class="hour"></span>
       <span class="all reporter"></span>
     </div>
     <div>
+      <button id="drop">drop</button>
       <span id="export">
         <button>export</button>
         <a>get your file</a>
       </span>
       <button id="clear">crumbs</button>
     </div>
+    <script src="chart.js"></script>
+    <div style="clear: both"></div>
+    <div id="chart"></div>
 </body>
 </html>

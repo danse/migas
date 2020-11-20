@@ -35,6 +35,7 @@ function Reporter() {
 
 function set(n, reset) {
   $('input').attr('size', n);
+  $('#elapsed').text(n);
   if(reset) { $('input').prop('value', ''); }
 }
 
