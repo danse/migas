@@ -129,6 +129,9 @@ onload = function() {
       $('.hour').text(d.getHours()+':'+d.getMinutes());
     }
   });
+  $('button#drop').click(function () {
+    reset();
+  });
   $('button#clear').click(function () {
     burrito.update(Main.initialState);
     refresh();
