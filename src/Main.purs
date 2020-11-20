@@ -5,20 +5,22 @@ import Data.Array (snoc, filter, reverse, head, tail)
 import Data.Array as Array
 import Data.Time (Time)
 import Data.Int (toNumber, round)
-import Data.String (split, take, drop, length, Pattern(..), joinWith)
+import Data.String (split, take, length, Pattern(..), joinWith)
 import Data.String.Utils (stripChars)
 import Text.Smolder.HTML as HTML
 import Text.Smolder.HTML.Attributes as Attributes
 import Text.Smolder.Markup (text, (!), MarkupM)
 import Text.Smolder.Renderer.String (render)
 import Data.List.Lazy (replicate, foldl)
-import Data.List.Types (List)
 import Data.Foldable (fold, foldlDefault)
 import Autocategorise (classifier)
 import Data.Map as Map
 import Data.Maybe as Maybe
-import Data.Semigroup (class Semigroup)
-import Data.Monoid (class Monoid)
+import Data.Set as Set
+import Control.Monad.Free (Free)
+import Effect.Console (log)
+import Effect (Effect)
+
 -- import Data.Int (toNumber)
 
 -- import Data.Maybe (fromMaybe)
@@ -56,7 +58,7 @@ intersperse i [e] = [e]
 intersperse i l = a <> intersperse i b
   where a = Maybe.maybe [] f (head l)
         f j = [j, i]
-        b = Maybe.maybe [] id (tail l)
+        b = Maybe.maybe [] identity (tail l)
 
 descriptionSectionLength :: DescriptionSection -> Int
 descriptionSectionLength (Plain s) = length s
@@ -194,15 +196,16 @@ processDescription categories description minutes =
       grey = dropSections minutes sections
   in Shaped { solid: crumbify minutes solid, grey: grey }
 
-markupDescriptionSection :: DescriptionSection -> MarkupM _ Unit
+markupDescriptionSection :: forall a. DescriptionSection -> Free (MarkupM a) Unit
 markupDescriptionSection (Plain s) = HTML.span (text (s))
 markupDescriptionSection (Linked s) = (HTML.span ! Attributes.className "category") (text (s))
 
 -- I'm looking for a function Monad m, Foldable f => f m -> m
-foldHTML :: Array (HTML.Html _) -> (HTML.Html _)
+foldHTML :: forall a. Array (HTML.Html a) -> (HTML.Html a)
 foldHTML = fold
 
-markupDescriptionSections :: Array DescriptionSection -> MarkupM _ Unit
+--markupDescriptionSections :: Array DescriptionSection -> MarkupM _ Unit
+markupDescriptionSections :: forall a. Array DescriptionSection -> Free (MarkupM a) Unit
 markupDescriptionSections = foldHTML <<< map render
   where render s = do
           markupDescriptionSection s
@@ -237,8 +240,11 @@ instance semigroupChartStats :: Semigroup ChartStats where
 instance monoidChartStats :: Monoid ChartStats where
   mempty = ChartStats (Map.empty)
 
-lookupCharStats k (ChartStats c) = Map.lookup k c
-keysCharStats (ChartStats c) = Map.keys c
+lookupChartStats :: String -> ChartStats -> Maybe.Maybe Number
+lookupChartStats k (ChartStats c) = Map.lookup k c
+
+keysChartStats :: ChartStats -> Set.Set String
+keysChartStats (ChartStats c) = Map.keys c
 
 getChartData :: State -> Array ChartData
 getChartData s =
@@ -248,6 +254,9 @@ getChartData s =
       makeSingleton (Entry e) = ChartStats (Map.singleton (classify e.description) e.duration)
       allStats = map makeSingleton s.entries
       unifiedStats = fold allStats
-      toValue k = Maybe.fromMaybe 0.0 (lookupCharStats k unifiedStats)
+      toValue k = Maybe.fromMaybe 0.0 (lookupChartStats k unifiedStats)
       toData k = { label: k, value: toValue k }
-  in Array.fromFoldable (map toData (keysCharStats unifiedStats))
+  in Array.fromFoldable (Set.map toData (keysChartStats unifiedStats))
+
+main :: Effect Unit
+main = log "purescript main"

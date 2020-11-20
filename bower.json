@@ -10,29 +10,7 @@
     "output"
   ],
   "dependencies": {
-    "purescript-console": "^2.0.0",
-    "purescript-datetime": "^2.2.0",
-    "purescript-rationals": "^2.1.2",
-    "purescript-integers": "^2.1.1",
-    "purescript-prelude": "^2.5.0",
-    "purescript-test-unit": "^10.1.0",
-    "purescript-strings": "^2.1.0",
-    "purescript-maybe": "^2.1.1",
-    "purescript-stringutils": "^0.0.4",
-    "purescript-smolder": "^6.0.1",
-    "purescript-lists": "^3.4.0",
-    "purescript-maps": "2",
-    "purescript-sets": "2",
-    "purescript-monoid": "2",
-    "purescript-arrays": "3",
     "d3": "3",
     "jquery": "2"
-  },
-  "resolutions": {
-    "purescript-prelude": "^2.4.0",
-    "purescript-maybe": "^2.1.1",
-    "purescript-monoid": "^2.0.0",
-    "purescript-either": "^2.0.0",
-    "purescript-maps": "2"
   }
 }

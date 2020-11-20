@@ -5,3 +5,5 @@
 /.psci*
 /src/.webpack.js
 pure.js
+.purs-repl
+.spago
