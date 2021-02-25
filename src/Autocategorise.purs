@@ -14,6 +14,7 @@ import Data.Map as Map
 import Data.Array as Array
 import Data.List (fold)
 import Data.String as String
+import Data.String.Utils (words)
 import Data.Tuple as Tuple
 import Data.Maybe (Maybe(..), fromMaybe, isJust)
 
@@ -67,9 +68,8 @@ stopWords = Set.fromFoldable [
   ]
 
 tokenise :: String -> Array String
-tokenise = filter <<< split
+tokenise = filter <<< words
   where filter = Array.filter (\x -> not (Set.member x stopWords))
-        split = String.split (String.Pattern " ")
 
 classifier :: Array String -> String -> String
 classifier sentences = classify stats <<< tokenise

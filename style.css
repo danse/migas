@@ -11,6 +11,11 @@ button, input {
     vertical-align: middle;
 }
 
+input#prompt {
+    margin-left: -22px;
+    font-family: 'Ubuntu Mono', sans-serif;
+}
+
 button {
     background-color: #b8a3d2;
 }
@@ -67,13 +72,6 @@ body {
 }
 a, a:visited {
     color: #ffb6fc;
-}
-input {
-    font-family: 'Ubuntu Mono', sans-serif;
-/*
-        font-family: 'Cutive Mono', serif;
-        font-family: 'Nova Mono', cursive;
-*/
 }
 .folders {
     padding: 2em 0;
